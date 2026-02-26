@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  gridClass?: string;
+}
+
+const { title, description, gridClass = "" } = Astro.props;
+---
+
+<section
+  class={`bg-neutral-900 border border-neutral-800 rounded-lg p-6 ${gridClass}`}
+>
+  <div class="flex flex-col gap-3">
+    <h2 class="text-xl font-semibold text-sky-50">
+      {title}
+    </h2>
+    <p class="text-sm text-neutral-400">
+      {description}
+    </p>
+    <div class="mt-4">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  section:hover {
+    border-color: var(--color-purple-400);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.4),
+      0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  }
+
+  h2 {
+    background: linear-gradient(
+      135deg,
+      var(--color-purple-50) 0%,
+      var(--color-purple-900) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>

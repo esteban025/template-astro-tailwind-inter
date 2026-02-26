@@ -1,15 +1,87 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import SectionDesign from "@/components/SectionDesign.astro";
 ---
 
-<Layout>
-  <h1>Trading Page</h1>
-  <p>
-    Welcome to the trading page! Here you can find all the latest information
-    about trading activities, market trends, and more.
-  </p>
-  <p>
-    Stay tuned for updates and insights to help you make informed trading
-    decisions.
-  </p>
+<Layout
+  title="Trading - Registro de Operaciones"
+  description="Gestiona y analiza tus operaciones de trading"
+>
+  <main class="container mx-auto px-4 py-8">
+    <!-- Grid principal: Desktop 3 columnas, Tablet 2 columnas, Mobile 1 columna -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min"
+    >
+      <!-- Dashboard / Resumen General (ocupa 2 columnas en lg) -->
+      <SectionDesign
+        title="Dashboard General"
+        description="Resumen de métricas principales: balance total, P&L acumulado, win rate, número de operaciones activas y cerradas."
+        gridClass="lg:col-span-2"
+      />
+
+      <!-- Nueva Operación -->
+      <SectionDesign
+        title="Nueva Operación"
+        description="Formulario para registrar una nueva operación de trading con todos los detalles: instrumento, dirección, precios, stop loss, take profit, etc."
+      />
+
+      <!-- Operaciones Activas -->
+      <SectionDesign
+        title="Operaciones Activas"
+        description="Lista de operaciones abiertas actualmente con información en tiempo real: P&L flotante, duración, riesgo/beneficio."
+      />
+
+      <!-- Historial de Operaciones -->
+      <SectionDesign
+        title="Historial de Operaciones"
+        description="Tabla completa de operaciones cerradas con filtros por fecha, instrumento, estrategia. Incluye resultado, comisiones, duración."
+        gridClass="lg:col-span-2"
+      />
+
+      <!-- Estadísticas por Instrumento (ocupa 2 columnas en md) -->
+      <SectionDesign
+        title="Estadísticas por Instrumento"
+        description="Análisis de rendimiento por cada activo operado: P&L total, win rate, número de operaciones, promedio de ganancia/pérdida."
+        gridClass="md:col-span-2 lg:col-span-1"
+      />
+
+      <!-- Estadísticas por Estrategia -->
+      <SectionDesign
+        title="Estadísticas por Estrategia"
+        description="Desempeño de cada estrategia de trading: efectividad, consistencia, factor de ganancia, mejor y peor operación."
+        gridClass="md:col-span-1"
+      />
+
+      <!-- Rendimiento Mensual (ocupa columna completa) -->
+      <SectionDesign
+        title="Rendimiento Mensual"
+        description="Gráfico de equity curve y tabla de P&L mensual para visualizar la evolución de la cuenta a lo largo del tiempo."
+        gridClass="md:col-span-2 lg:col-span-3"
+      />
+
+      <!-- Gestión de Cuentas -->
+      <SectionDesign
+        title="Gestión de Cuentas"
+        description="Administra tus cuentas de broker: balances, comisiones totales, operaciones por cuenta. Agrega nuevas cuentas de fondeo."
+      />
+
+      <!-- Gestión de Estrategias -->
+      <SectionDesign
+        title="Gestión de Estrategias"
+        description="Crea, edita y elimina estrategias de trading. Asigna descripciones y notas para cada metodología que utilices."
+      />
+
+      <!-- Calendario de Operaciones -->
+      <SectionDesign
+        title="Calendario de Operaciones"
+        description="Vista de calendario con todas las operaciones realizadas. Identifica patrones, días más rentables y sesiones de trading."
+      />
+    </div>
+  </main>
 </Layout>
+
+<style>
+  main {
+    min-height: calc(100vh - 200px);
+  }
+</style>
