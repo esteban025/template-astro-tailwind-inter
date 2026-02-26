@@ -1,0 +1,56 @@
+---
+const items = [
+  { name: "Gastos", href: "#" },
+  { name: "Trading", href: "#" },
+];
+// por ahora el ancho del indicator sera ingresado manualmente
+const width = "w-1/2";
+---
+
+<nav class="flex items-center justify-center mt-6">
+  <ul class="bg-neutral-800 flex items-center rounded-full relative">
+    {
+      items.map((item) => (
+        <li class="relative z-10 font-bold literal">
+          <a
+            class="p-2 px-5 block link-nav transition-colors duration-300"
+            href={item.href}
+          >
+            {item.name}
+          </a>
+        </li>
+      ))
+    }
+    <li
+      id="indicator-nav"
+      class="h-full absolute left-0 top-0 rounded-full transition-all duration-300 bg-white"
+      class:list={[width]}
+    >
+    </li>
+  </ul>
+</nav>
+
+<script>
+  import { $$, $id } from "@/utils/getSelectedDom";
+  const links = $$(".link-nav") as NodeListOf<HTMLAnchorElement>;
+  const indicator = $id("indicator-nav") as HTMLLIElement;
+
+  links[0].classList.add("active");
+
+  const updateIndicator = (event: MouseEvent) => {
+    const target = event.currentTarget;
+    if (!(target instanceof HTMLAnchorElement)) return;
+    const index = Array.from(links).indexOf(target);
+    indicator.style.transform = `translateX(${index * 100}%)`;
+  };
+
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      updateIndicator(event);
+      links.forEach((link) => {
+        link.classList.remove("active");
+      });
+      link.classList.add("active");
+    });
+  });
+</script>

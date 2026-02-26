@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./navbar.css";
+@import "./buttons.css";
 
 /* Supports weights 100-900 */
 @import '@fontsource-variable/inter-tight';
@@ -7,12 +9,6 @@
   :root {
     --font-inter: 'Inter Tight Variable', sans-serif;
   }  
-}
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
 }
 
 body {

@@ -1,5 +1,8 @@
 ---
 import "../styles/global.css";
+import ClientRouter from "astro/components/ClientRouter.astro";
+import Header from "@/sections/Header.astro";
+import { Navbar } from "@/components/react/Navbar";
 const { title, description } = Astro.props;
 ---
 
@@ -12,8 +15,13 @@ const { title, description } = Astro.props;
 		<link rel="icon" href="/favicon.ico" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<ClientRouter />
 	</head>
-	<body>
+	<body class="bg-neutral-950 text-sky-50 p-4">
+		<div class="container mx-auto" transition:name="base-page">
+			<Header />
+			<Navbar client:load transition:persist />
+		</div>
 		<slot />
 	</body>
 </html>

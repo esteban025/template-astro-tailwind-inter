@@ -1,7 +1,17 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/sections/Header.astro";
+// import Navbar from "@/sections/Navbar.astro";
+import { Navbar } from "@/components/react/Navbar";
 ---
 
-<Layout>
-	<h1>Template Astro</h1>
+<Layout
+	title="Control de finanzas e ingresos"
+	description="Registra tus gastos e ingresos y tus operaciones de trading en diferentes apartados"
+>
+	<div class="ss">
+		<button class="btn btn-primary">Primary</button>
+		<button class="btn btn-secondary">Secondary</button>
+		<button class="btn btn-tertiary">Tertiary</button>
+	</div>
 </Layout>
