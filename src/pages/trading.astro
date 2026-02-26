@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import SectionDesign from "@/components/SectionDesign.astro";
+import OperationForm from "@/components/OperationForm.astro";
 ---
 
 <Layout
@@ -20,10 +21,9 @@ import SectionDesign from "@/components/SectionDesign.astro";
       />
 
       <!-- Nueva Operación -->
-      <SectionDesign
-        title="Nueva Operación"
-        description="Formulario para registrar una nueva operación de trading con todos los detalles: instrumento, dirección, precios, stop loss, take profit, etc."
-      />
+      <SectionDesign title="Nueva Operación">
+        <OperationForm />
+      </SectionDesign>
 
       <!-- Operaciones Activas -->
       <SectionDesign

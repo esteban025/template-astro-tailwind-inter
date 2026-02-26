@@ -1,0 +1,259 @@
+---
+import { actions } from "astro:actions";
+
+// Cargar datos necesarios para el formulario
+const [instrumentsRes, strategiesRes, accountsRes] = await Promise.all([
+  Astro.callAction(actions.getInstruments, {}),
+  Astro.callAction(actions.getStrategies, {}),
+  Astro.callAction(actions.getAccounts, {}),
+]);
+
+const instruments = instrumentsRes.data?.data || [];
+const strategies = strategiesRes.data?.data || [];
+const accounts = accountsRes.data?.data || [];
+
+const currentDateTime = new Date().toISOString().slice(0, 16);
+---
+
+<form
+  id="operation-form"
+  class="w-full space-y-4"
+  method="POST"
+  action={actions.createOperation}
+>
+  <!-- Mensajes de estado -->
+  <div id="form-messages" class="hidden"></div>
+
+  <!-- Fila 1: Instrumento + Dirección -->
+  <div class="grid grid-cols-1 gap-4">
+    <div class="form-group">
+      <h3>Dirección *</h3>
+      <div class="nav-container flex items-center">
+        <div id="indicator-direction" class="indicator w-[calc(50%-4px)] buy">
+        </div>
+        <div class="form-group-check">
+          <input
+            type="radio"
+            class="input-direction input-buy"
+            name="direction"
+            id="buy-ratio"
+            value="buy"
+            checked
+          />
+          <label for="buy-ratio">Buy</label>
+        </div>
+        <div class="form-group-check">
+          <input
+            type="radio"
+            name="direction"
+            id="sell-ratio"
+            value="sell"
+            class="input-direction input-sell"
+          />
+          <label for="sell-ratio">Sell</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h3>Instrumento *</h3>
+      <select
+        id="instrument_id"
+        name="instrument_id"
+        required
+        class="form-select space-y-1"
+      >
+        <option value="" class="options-select" disabled selected
+          >Selecciona un instrumento</option
+        >
+        {
+          instruments.map((inst: any) => (
+            <option value={inst.id} class="options-select">
+              {inst.symbol} - {inst.market_type}
+            </option>
+          ))
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Fila 2: Cuenta + Estrategia -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="form-group">
+      <h3>Cuenta</h3>
+      <select id="account_id" name="account_id" class="form-select space-y-1">
+        <option value="" class="options-select" disabled selected
+          >Sin asignar</option
+        >
+        {
+          accounts.map((acc: any) => (
+            <option value={acc.id} class="options-select">
+              {acc.broker_name}
+              {acc.account_number ? ` - ${acc.account_number}` : ""}
+            </option>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <h3>Estrategia</h3>
+      <select id="strategy_id" name="strategy_id" class="form-select space-y-1">
+        <option value="" class="options-select" disabled selected
+          >Sin asignar</option
+        >
+        {
+          strategies.map((strat: any) => (
+            <option value={strat.id}>{strat.name}</option>
+          ))
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Fila 3: Precios (Entry, SL, TP) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="form-group">
+      <h3 class="truncate">Precio de Entrada *</h3>
+      <input
+        type="number"
+        id="entry_price"
+        name="entry_price"
+        step="0.00001"
+        required
+        placeholder="0.00000"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <h3>Stop Loss</h3>
+      <input
+        type="number"
+        id="stop_loss"
+        name="stop_loss"
+        step="0.00001"
+        placeholder="0.00000"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <h3>Take Profit</h3>
+      <input
+        type="number"
+        id="take_profit"
+        name="take_profit"
+        step="0.00001"
+        placeholder="0.00000"
+        class="form-input"
+      />
+    </div>
+  </div>
+
+  <!-- Fila 4: Tamaño de posición + Comisión -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="form-group">
+      <h3>Tamaño de Posición *</h3>
+      <input
+        type="number"
+        id="position_size"
+        name="position_size"
+        step="0.0001"
+        required
+        placeholder="Lotes/Unidades"
+        class="form-input"
+      />
+    </div>
+
+    <div class="form-group">
+      <h3>Comisión (USD)</h3>
+      <input
+        type="number"
+        id="commission"
+        name="commission"
+        step="0.01"
+        value="0"
+        placeholder="0.00"
+        class="form-input"
+      />
+    </div>
+  </div>
+
+  <!-- Fila 5: Fecha -->
+  <div class="form-group">
+    <h3>Fecha y Hora de Entrada *</h3>
+    <input
+      type="datetime-local"
+      id="entry_date"
+      name="entry_date"
+      value={currentDateTime}
+      required
+      class="form-input"
+    />
+  </div>
+
+  <!-- Risk/Reward Indicator -->
+  <div
+    id="rr-indicator"
+    class="hidden rr-indicator bg-violet-500/10 border border-violet-500/30 rounded-lg p-3"
+  >
+    <span class="text-xs text-neutral-400">Risk/Reward Ratio:</span>
+    <span id="rr-value" class="ml-2 text-lg font-semibold text-violet-300"
+    ></span>
+  </div>
+
+  <!-- Notas -->
+  <div class="form-group">
+    <h3>Notas</h3>
+    <textarea
+      id="notes"
+      name="notes"
+      rows="3"
+      placeholder="Análisis, razón de la operación, observaciones..."
+      class="form-input resize-none"></textarea>
+  </div>
+
+  <!-- Botón de envío -->
+  <button
+    type="submit"
+    id="submit-btn"
+    class="submit-button w-full py-3 px-6 rounded-lg font-semibold text-white transition-all"
+  >
+    Registrar Operación
+  </button>
+</form>
+
+<style>
+  /* Los estilos del nav-container e indicador están en navbar.css */
+  /* Los estilos de formulario están en forms.css */
+</style>
+
+<script>
+  import { $id, $$ } from "@/utils/getSelectedDom";
+  import { actions } from "astro:actions";
+
+  document.addEventListener("astro:page-load", () => {
+    const inputsDirection = $$(
+      ".input-direction",
+    ) as NodeListOf<HTMLInputElement>;
+    const indicator = $id("indicator-direction") as HTMLDivElement;
+
+    function updateDirectionIndicator() {
+      const inputs = Array.from(inputsDirection);
+      const activeIndex = inputs.findIndex((input) => input.checked);
+      if (activeIndex !== -1) {
+        indicator.style.transform = `translateX(${activeIndex * 100}%)`;
+      }
+      activeIndex === 0
+        ? indicator.classList.add("buy")
+        : indicator.classList.remove("buy");
+    }
+
+    inputsDirection.forEach((input) => {
+      input.addEventListener("change", () => {
+        updateDirectionIndicator();
+      });
+    });
+  });
+</script>

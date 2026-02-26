@@ -1,7 +1,7 @@
 ---
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   gridClass?: string;
 }
 
@@ -15,9 +15,7 @@ const { title, description, gridClass = "" } = Astro.props;
     <h2 class="text-xl font-semibold text-sky-50">
       {title}
     </h2>
-    <p class="text-sm text-neutral-400">
-      {description}
-    </p>
+    {description && <p class="text-sm text-neutral-400">{description}</p>}
     <div class="mt-4">
       <slot />
     </div>

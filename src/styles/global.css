@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./navbar.css";
 @import "./buttons.css";
+@import "./forms.css";
 
 /* Supports weights 100-900 */
 @import '@fontsource-variable/inter-tight';
@@ -8,6 +9,17 @@
 @layer base {
   :root {
     --font-inter: 'Inter Tight Variable', sans-serif;
+    --color-border: rgba(115, 115, 115, 0.3);
+    --color-gradient-primary:linear-gradient(135deg, 
+      rgb(124, 58, 237) 0%, 
+      rgb(139, 92, 246) 50%, 
+      rgb(109, 40, 217) 100%)
+    ;
+    --color-gradient-primary-hover: linear-gradient(135deg, 
+      rgb(129, 79, 246) 0%, 
+      rgb(159, 127, 255) 50%, 
+      rgb(104, 34, 225) 100%);
+    --color-border-primary: #a78bfa80;
   }  
 }
 

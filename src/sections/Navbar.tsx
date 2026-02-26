@@ -14,7 +14,7 @@ export const Navbar = () => {
 
   return (
     <nav className="flex items-center justify-center mt-6">
-      <ul className="nav-container relative flex p-1 rounded-full w-fit">
+      <ul className="nav-container relative flex p-1 w-fit">
         {
           items.map((item, index) => (
             <li
@@ -24,7 +24,7 @@ export const Navbar = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <a
-                className={`py-2.5 px-6 block link-nav transition-all duration-300 rounded-full ${active === index ? "active" : ""
+                className={`link-nav ${active === index ? "active" : ""
                   } ${hoveredIndex === index && active !== index ? "hovered" : ""
                   }`}
                 href={item.href}
@@ -37,7 +37,7 @@ export const Navbar = () => {
         }
         <li
           id="indicator-nav"
-          className={`absolute top-1 left-1 bottom-1 rounded-full ${width}`}
+          className={`indicator ${width}`}
           style={{ transform: `translateX(${active * 100}%)` }}
         >
         </li>
